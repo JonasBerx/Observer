@@ -8,7 +8,12 @@ public class RekeningLogger implements Observer {
     private ArrayList<Rekening> rekeningen = new ArrayList<>();
 
     @Override
-    public void update(Rekening rekening, LocalDate date) {
+    public void update(Rekening rekening) {
+        for (int i = 0; i < rekeningen.size(); i++) {
+            if (rekening.getRekeningnummer().equals(rekeningen.get(i))) {
+                throw new IllegalArgumentException("Account already exists");
+            }
+        }
         rekeningen.add(rekening);
         display();
     }

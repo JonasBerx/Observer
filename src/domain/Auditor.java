@@ -7,13 +7,13 @@ public class Auditor implements Observer {
     Rekening rekening;
     LocalDate lastdate;
     @Override
-    public void update(Rekening rekening, LocalDate date) {
+    public void update(Rekening rekening) {
         this.rekening = rekening;
-        this.lastdate = date;
+
         display();
     }
     @Override
     public void display() {
-        System.out.println("Nieuwe rekening geopened op datum " + lastdate + " met nummer " + rekening.getRekeningnummer() + " en saldo : " + rekening.getBalance());
+        System.out.println("Nieuwe rekening geopened op datum " + rekening.getCreationDate() + " met nummer " + rekening.getRekeningnummer() + " en saldo : " + rekening.getBalance());
     }
 }

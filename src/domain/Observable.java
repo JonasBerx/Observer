@@ -6,6 +6,6 @@ public interface Observable {
 
     void removeObserver(Observer observer);
 
-    void notifyObservers();
+    void notifyObservers(String rekeningnummer);
 
 }

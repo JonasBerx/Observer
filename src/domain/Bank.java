@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,22 +34,25 @@ public class Bank implements Observable {
     public void withdraw(String rekeningnummer, double amount) {
         Rekening rekening = rekeningen.get(rekeningnummer);
         rekening.withdraw(amount);
+//        notifyObservers(rekeningnummer);
 
     }
 
     public void deposit(String rekeningnummer, double amount) {
         Rekening rekening = rekeningen.get(rekeningnummer);
         rekening.deposit(amount);
+//        notifyObservers(rekeningnummer);
     }
 
     public void create(String rekeningnummer) {
         Rekening rekening = new Rekening(rekeningnummer);
         rekeningen.put(rekeningnummer, rekening);
+        notifyObservers(rekeningnummer);
     }
-
+    // TODO delete throws errors.
     public void delete(String rekeningnummer) {
         rekeningen.remove(rekeningnummer);
-        System.out.println("Yeet");
+        notifyObservers(rekeningnummer);
     }
 
     @Override
@@ -65,10 +69,14 @@ public class Bank implements Observable {
     }
     //TODO notify observers function - No idea how to implement correct
     @Override
-    public void notifyObservers() {
+    public void notifyObservers(String rekeningnummer) {
+
         for (int i = 0; i < observers.size(); i++) {
             Observer observer = observers.get(i);
-            observer.update(null,null);
+            Rekening rekening = rekeningen.get(rekeningnummer);
+            System.out.println(rekeningnummer);
+
+            observer.update(rekening);
         }
     }
 }
