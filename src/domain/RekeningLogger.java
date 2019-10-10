@@ -10,6 +10,7 @@ public class RekeningLogger implements Observer {
     @Override
     public void update(Rekening rekening, LocalDate date) {
         rekeningen.add(rekening);
+        display();
     }
     @Override
     public void display() {

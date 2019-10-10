@@ -10,6 +10,7 @@ public class Auditor implements Observer {
     public void update(Rekening rekening, LocalDate date) {
         this.rekening = rekening;
         this.lastdate = date;
+        display();
     }
     @Override
     public void display() {

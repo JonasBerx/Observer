@@ -17,12 +17,20 @@ public class BankUI {
         bank.addObserver(auditor);
         bank.addObserver(logger);
         bank.create("1234567890");
+        bank.create("12345678911");
+
         bank.deposit("1234567890", 52);
         System.out.println(bank.getRekening("1234567890").getRekeningnummer());
         auditor.update(bank.getRekening("1234567890"), bank.getRekening("1234567890").getCreationDate());
-        auditor.display();
+//        auditor.display();
         logger.update(bank.getRekening("1234567890"), bank.getRekening("1234567890").getCreationDate());
-        logger.display();
+//        logger.display();
+
+
+        // Test bank update method - Still to implement
+        // Also : YEET :)
+        bank.deposit("12345678911", 524856);
+        bank.withdraw("12345678911", 524856);
 
     }
 }
