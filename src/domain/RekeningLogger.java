@@ -10,7 +10,7 @@ public class RekeningLogger implements Observer {
     @Override
     public void update(Rekening rekening) {
         for (int i = 0; i < rekeningen.size(); i++) {
-            if (rekening.getRekeningnummer().equals(rekeningen.get(i))) {
+            if (rekening.getRekeningnummer().equals(rekeningen.get(i).getRekeningnummer())) {
                 throw new IllegalArgumentException("Account already exists");
             }
         }

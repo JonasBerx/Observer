@@ -34,7 +34,7 @@ public class BankUI {
 
         System.out.println("--------------------------------\n");
 //          TODO Fix delete issue.
-//        bank.delete("12345678911");
+        bank.delete("12345678911");
         logger.display();
 
 
