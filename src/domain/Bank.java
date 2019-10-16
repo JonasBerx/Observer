@@ -1,15 +1,18 @@
 package domain;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Bank implements Observable {
     private String naam;
     private HashMap<String, Rekening> rekeningen = new HashMap<>();
-    private ArrayList<Observer> observers = new ArrayList<>();
+    private HashMap<BankEvent, Collection<Observer>> eventObservers = new HashMap<>();
 
     public Bank(String naam) {
+        for (BankEvent event : BankEvent.values()) {
+            eventObservers.put(event, new LinkedList<Observer>());
+        }
         setNaam(naam);
     }
 
@@ -28,55 +31,58 @@ public class Bank implements Observable {
             throw new IllegalArgumentException("Empty name");
         }
         this.naam = naam;
-
     }
 
     public void withdraw(String rekeningnummer, double amount) {
         Rekening rekening = rekeningen.get(rekeningnummer);
         rekening.withdraw(amount);
-//        notifyObservers(rekeningnummer);
+        notifyObservers(BankEvent.HAAL_AF, rekeningnummer);
 
     }
 
     public void deposit(String rekeningnummer, double amount) {
         Rekening rekening = rekeningen.get(rekeningnummer);
         rekening.deposit(amount);
-//        notifyObservers(rekeningnummer);
+        notifyObservers(BankEvent.STORT, rekeningnummer);
     }
 
     public void create(String rekeningnummer) {
         Rekening rekening = new Rekening(rekeningnummer);
         rekeningen.put(rekeningnummer, rekening);
-        notifyObservers(rekeningnummer);
+        notifyObservers(BankEvent.OPEN, rekeningnummer);
     }
-    // TODO delete throws errors.
+
     public void delete(String rekeningnummer) {
+        notifyObservers(BankEvent.SLUIT, rekeningnummer);
         rekeningen.remove(rekeningnummer);
-        notifyObservers(rekeningnummer);
     }
 
     @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
+    public void addObserver(Collection<BankEvent> bankEvents, Observer observer) {
+        for (BankEvent bankEvent : bankEvents) {
+            addObserver(bankEvent, observer);
+        }
+    }
+
+    @Override
+    public void addObserver(BankEvent bankEvent, Observer observer) {
+        eventObservers.get(bankEvent).add(observer);
     }
 
     @Override
     public void removeObserver(Observer observer) {
-        int i = observers.indexOf(observer);
-        if (i >= 0) {
-            observers.remove(i);
+        for (Collection observers : eventObservers.values()) {
+            observers.remove(observer);
         }
     }
-    //TODO notify observers function - No idea how to implement correct
-    @Override
-    public void notifyObservers(String rekeningnummer) {
 
-        for (int i = 0; i < observers.size(); i++) {
-            Observer observer = observers.get(i);
+    @Override
+    public void notifyObservers(BankEvent bankEvent, String rekeningnummer) {
+        for (Observer observer : eventObservers.get(bankEvent)) {
             Rekening rekening = rekeningen.get(rekeningnummer);
             System.out.println(rekeningnummer);
 
-            observer.update(rekening);
+            observer.update(bankEvent, rekening);
         }
     }
 }

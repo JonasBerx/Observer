@@ -4,16 +4,17 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class Auditor implements Observer {
-    Rekening rekening;
-    LocalDate lastdate;
-    @Override
-    public void update(Rekening rekening) {
-        this.rekening = rekening;
+    private Rekening rekening;
 
-        display();
-    }
     @Override
+    public void update(BankEvent bankEvent, Rekening rekening) {
+        if (bankEvent.equals(BankEvent.OPEN)) {
+            this.rekening = rekening;
+            display();
+        }
+    }
+
     public void display() {
-        System.out.println("Nieuwe rekening geopened op datum " + rekening.getCreationDate() + " met nummer " + rekening.getRekeningnummer() + " en saldo : " + rekening.getBalance());
+        System.out.println("Nieuwe rekening geopened op datum " + this.rekening.getCreationDate() + " met nummer " + this.rekening.getRekeningnummer() + " en saldo : " + this.rekening.getBalance());
     }
 }

@@ -1,21 +1,20 @@
 package ui;
 
-import domain.Auditor;
-import domain.Bank;
-import domain.Observer;
-import domain.RekeningLogger;
+import domain.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class BankUI {
 
     public static void main(String[] args) {
-        Observer auditor = new Auditor();
-        Observer logger = new RekeningLogger();
+        Auditor auditor = new Auditor();
+        RekeningLogger logger = new RekeningLogger();
         Bank bank = new Bank("Bankje");
-        bank.addObserver(auditor);
-        bank.addObserver(logger);
+        bank.addObserver(BankEvent.OPEN, auditor);
+        bank.addObserver(Arrays.asList(BankEvent.values()), logger);
         bank.create("1234567890");
         System.out.println("--------------------------------\n");
         bank.create("12345678911");
@@ -33,9 +32,7 @@ public class BankUI {
         logger.display();
 
         System.out.println("--------------------------------\n");
-//          TODO Fix delete issue.
         bank.delete("12345678911");
-        logger.display();
 
 
         // Test bank update method - Still to implement

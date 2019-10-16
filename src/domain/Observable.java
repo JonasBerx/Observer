@@ -1,11 +1,13 @@
 package domain;
 
-public interface Observable {
+import java.util.Collection;
 
-    void addObserver(Observer observer);
+public interface Observable {
+    void addObserver(BankEvent bankEvent, Observer observer);
+
+    void addObserver(Collection<BankEvent> bankEvents, Observer observer);
 
     void removeObserver(Observer observer);
 
-    void notifyObservers(String rekeningnummer);
-
+    void notifyObservers(BankEvent bankEvent, String rekeningnummer);
 }
